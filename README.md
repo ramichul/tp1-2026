@@ -46,9 +46,9 @@ valgrind ./pruebas_tp1
 ## 2. Funcionamiento
 ### Estructuras
 ##### Pokédex (tp1)
-Es la estructura principal del programa. Contiene un vector de punteros a Pokémon que viven en el heap, además de un tope que indíca la cantidad actual de Pokémon presentes. Se va rellenando a medida que se lee el archivo.
+Es la estructura principal del programa. Contiene un vector de punteros a Pokémon que viven en el heap, además de un tope que indica la cantidad actual de Pokémon presentes. Se va rellenando a medida que se lee el archivo.
 ##### Pokémon
-Es la estructura que rellena el vector dentro de la Pokédex. Contiene diferentes datos como su nombre, su tipo, su ataque, su defensa y su velocidad.
+Es la estructura que rellena el vector dentro de la Pokédex. Contiene diferentes datos como su nombre, tipo, ataque, defensa y velocidad.
 ##### Arquitectura final del programa
 Las estructuras del programa, en el instante que se finaliza la lectura de un archivo, quedan dispuestas dentro de la memoria de la siguiente manera:
 
@@ -59,8 +59,8 @@ Existen varias operaciones para realizar sobre la Pokédex:
 
 **`tp1_leer_archivo`**: Lee el archivo indicado y devuelve la Pokédex con los Pokémon correspondientes. Este proceso se realiza en varias fases diferentes:
 1. Se abre el archivo indicado por `nombre` y se reserva memoria tanto para la estructura como la colección de Pokémon.
-2. Se lee una línea y se determina si esta está vacía o es el final del archivo. Si lo és, se ignora y se repite este proceso con la siguiente línea del archivo. Internamente, se lee a partír del archivo y el texto se inserta en un buffer dinámico que se va llenando y escalando continuamente hasta poder contener a la línea completa. El final de una línea se reconoce por el marcador `'\n'`.
-3. La línea leída se parsea para asegurar que esta tenga el formato correcto. Si no lo tiene, nuevamente se ignora y se continúa con la siguiente línea. Esto implíca que se respete la estructura pedida para cada línea, que la cantidad de campos sea la esperada y que los campos tengan valores lógicos (no se acepta que el Pokémon sea de un tipo fuera de los nombrados en la biblioteca, por ejemplo). Nuevamente si no se logra pasar este chequeo, el proceso se empieza desde cero.
+2. Se lee una línea y se determina si esta está vacía o es el final del archivo. Si lo es, se ignora y se repite este proceso con la siguiente línea del archivo. Internamente, se lee a partir del archivo y el texto se inserta en un buffer dinámico que se va llenando y escalando continuamente hasta poder contener a la línea completa. El final de una línea se reconoce por el marcador `'\n'`.
+3. La línea leída se parsea para asegurar que esta tenga el formato correcto. Si no lo tiene, nuevamente se ignora y se continúa con la siguiente línea. Esto exige que se respete la estructura pedida para cada línea, que la cantidad de campos sea la esperada y que los campos tengan valores lógicos (no se acepta que el Pokémon sea de un tipo fuera de los nombrados en `tp1.h`, por ejemplo). Nuevamente si no se logra pasar este chequeo, el proceso se empieza desde cero.
 4. Si se parsea sin errores, se escanea la colección de Pokémon hasta ahora para asegurarse de que el Pokémon que se está por agregar al vector no sea repetido (se identifica por nombre y sin distinguir por mayúsculas). En caso de serlo, se ignora la línea y se continúa con la siguiente del archivo.
 5. Finalmente se agrega el Pokémon al vector con un chequo por si se debe hacer un ajuste al tamaño del vector. Internamente, este vector se maneja muy similarmente al buffer utilizado durante el proceso de lectura de línea.
 6. Se repiten los pasos 2-5 hasta leer todas las líneas del archivo.
@@ -74,35 +74,35 @@ Siendo esta la función más compleja del proyecto, se adjunta un diagrama simpl
 **`tp1_cantidad`**: Devuelve la cantidad actual de Pokémon dentro de la Pokédex.
 
 **`tp1_guardar_archivo`**: Guarda en el archivo indicado los Pokémon contenidos en la Pokédex de manera tal que `tp1_leer_archivo` pueda volver a leerlo correctamente. Su funcionamiento es el siguiente:
-1. Se crea o se sobreescribe el archivo con el `nombre` indicado.
+1. Se crea o sobreescribe el archivo con el `nombre` indicado.
 2. Para cada Pokémon dentro de la Pokédex, se escribe una línea en el mismo formato que se utiliza para leer. Los tipos, antes almacenados como un número dentro de la estructura, son convertidos automáticamente a texto.
 3. Se finaliza el guardado del archivo.
 
 **`tp1_filtrar_tipo`**: Dado una Pokédex y un `tipo` específico, devuelve otra Pokédex conteniendo solamente los Pokémon de dicho tipo. Funciona así:
 1. Se reserva memoria tanto para la nueva Pokédex como su colección de Pokémon.
-2. Se crea un vector auxiliar para almacenar todos los Pokémon que se deberan copiar de la Pokédex original.
+2. Se crea un vector auxiliar para almacenar todos los Pokémon que se deberán copiar de la Pokédex original.
 3. Se recorre la Pokédex original y se identifican los Pokémones a copiar (es decír, los que tienen el `tipo` pedido). Estos Pokémon se guardan en el vector auxiliar sin quitarlos de la Pokédex original.
 4. A partir del vector auxiliar, se copian los Pokémon uno por uno y se almacenan dentro de la nueva Pokédex.
 5. Se libera la memoria ocupada por el vector auxiliar y se devuelve la nueva Pokédex.
 
-**`tp1_buscar_nombre`**: Busca un Pokémon por `nombre`. Se ejecuta una busqueda binaria clásica sobre la Pokédex, aprovechando el hecho de que los Pokémon estan ordenados por nombre.
+**`tp1_buscar_nombre`**: Busca un Pokémon por `nombre`. Se ejecuta una búsqueda binaria clásica sobre la Pokédex, aprovechando el hecho de que los Pokémon están ordenados por nombre.
 
-**`tp1_buscar_orden`**: Devuelve el `n`-ésimo pokemon por orden alfabetico (de menor a mayor). Nuevamente, esto resulta ser muy fácil gracias a que los Pokémon ya vienen ordenados así. Se accede al puntero a Pokémon en la posición `n` y se devuelve directamente.
+**`tp1_buscar_orden`**: Devuelve el `n`-ésimo Pokémon por orden alfabético (de menor a mayor). Nuevamente, esto resulta ser muy fácil gracias a que los Pokémon ya vienen ordenados así. Se accede al puntero a Pokémon en la posición `n` y se devuelve directamente.
 
-**`tp1_con_cada_pokemon`**: Aplica la función `f` a cada Pokémon por orden alfabético (de menor a mayor). La función deja de aplicarse si `f` devuelve `false` o se terminaron los Pokémon. 
+**`tp1_con_cada_pokemon`**: Aplíca la función `f` a cada Pokémon por orden alfabético (de menor a mayor). Se deja de iterar si `f` devuelve `false` o se terminaron los Pokémon.
 
 **`tp1_destruir`**: Libera toda la memoria asociada a la Pokédex. Estas liberaciones se hacen en un orden muy especifico para respetar la estructura de la Pokédex, y garantizan que no quede ningún dato colgando dentro del heap.
 &nbsp;
 ### Flujo del programa
 El programa empieza por imprimir un mensaje de bienvenida. Luego, controla que lo ingresado por línea de comando sea lo esperado. Si se llega a detectar una falla, se imprime un error detallando que sucedió mal, y se muestran las instrucciones por pantalla. 
 
-Por ejemplo, el programa responde a la entrada `./tp1 a b c` de la siguiente manera:
+Por ejemplo, el programa responde a la entrada incorrecta `./tp1 a b c` de la siguiente manera:
 
 
 ![](https://i.imgur.com/mRzE029.png)
 
 
-Si se pasan los controles iniciales, se empiezan a leer los Pokémon del archivo especificado, y se guardan dentro de un tp1_t utilizando `tp1_leer_archivo()` (proceso detallado en [la sección de primitivas del informe](#primitivas).)
+Si se pasan los controles iniciales, se empiezan a leer los Pokémon del archivo especificado, y se guardan dentro de un `tp1_t` utilizando `tp1_leer_archivo()` (proceso detallado en [la sección de primitivas del informe](#primitivas)).
 
 
 Se obtiene la Pokédex a partír del archivo, y según la entrada del usuario se ejecutan uno de dos comandos:
@@ -120,7 +120,7 @@ Para imprimir por orden de tipo, resultó necesario tener una manera de manipula
 3. Se imprimen los datos de todos los Pokémon posición por posición.
 4. Se libera la memoria que ocupó el vector auxiliar.
 
-Luego de ejecutar el comando, se vuelve y se libera la memoria ocupada por la Pokédex. El programa termina su ejecución sin errores en este punto, y le avisa de esto al usuario.
+Luego de ejecutar el comando se libera la memoria ocupada por la Pokédex. El programa termina su ejecución sin errores en este punto, y le avisa de esto al usuario.
 
 
 &nbsp;
