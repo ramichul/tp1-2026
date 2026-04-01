@@ -142,7 +142,7 @@ La respuesta a este ítem se puede encontrar en [la sección de estructuras del 
 &nbsp;
  - **Justificar la complejidad computacional temporal de  cada una de las funciones que se piden implementar.**
 
-**`tp1_leer_archivo`**: Para una línea de lóngitud $n$, se estarían ejecutando las funciones `tp1_leer_linea`, `tp1_parsear_linea` y `pokemon_es_repetido`. Por lo tanto, la lectura de una línea y todos los procesos que implíca componen una tarea acotada en complejidad por la función más compleja de las 3. Posterior a la lectura, se ordenan los Pokémon con un *Bubble Sort*, también de complejidad $O(n^2)$.
+**`tp1_leer_archivo`**: Para una línea de lóngitud $n$, se estarían ejecutando las funciones `tp1_leer_linea`, `tp1_parsear_linea` y `pokemon_es_repetido`. Por lo tanto, la lectura de una línea y todos los procesos que implíca componen una tarea acotada en complejidad por la función más compleja de las 3. Posterior a la lectura, se ordenan los Pokémon con un *Bubble Sort*, de complejidad $O(n^2)$.
 
 Veamos las complejidades individuales de cada función:
 
@@ -150,7 +150,7 @@ Veamos las complejidades individuales de cada función:
 
 Se sabe que `realloc` se invocará $log_2(n)$ veces durante toda la lectura, ya que el tamaño del buffer se duplíca cada vez que se necesita ampliarlo, y que además moverá cada vez más posiciones de la memoria hasta que el bloque contenga a la línea completa. Entonces, matemáticamente, su trabajo es:
 
-$T(n) = n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + ... + 4 + 2 + 1$
+$T(n) = n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + ... + 1$
 
 $T(n) = \sum_{i=0}^{log_2(n)}\frac{n}{2^i}$
 
