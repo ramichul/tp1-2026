@@ -51,6 +51,7 @@ Es la estructura principal del programa. Contiene un vector de punteros a Pokém
 Es la estructura que rellena el vector dentro de la Pokédex. Contiene diferentes datos como su nombre, su tipo, su ataque, su defensa y su velocidad.
 ##### Arquitectura final del programa
 Las estructuras del programa, en el instante que se finaliza la lectura de un archivo, quedan dispuestas dentro de la memoria de la siguiente manera:
+
 ![](https://i.imgur.com/udOnSyv.png)
 
 ### Primitivas
@@ -68,7 +69,7 @@ Existen varias operaciones para realizar sobre la Pokédex:
 
 Siendo esta la función más compleja del proyecto, se adjunta un diagrama simplificado para poder visualizar su funcionamiento:
 
-![](https://i.imgur.com/TdCviI5.png)
+![](https://i.imgur.com/72ZhqAg.png)
 
 **`tp1_cantidad`**: Devuelve la cantidad actual de Pokémon dentro de la Pokédex.
 
@@ -86,7 +87,7 @@ Siendo esta la función más compleja del proyecto, se adjunta un diagrama simpl
 
 **`tp1_buscar_nombre`**: Busca un Pokémon por `nombre`. Se ejecuta una busqueda binaria clásica sobre la Pokédex, aprovechando el hecho de que los Pokémon estan ordenados por nombre.
 
-**`tp1_buscar_orden`**: Devuelve el `n`-esimo pokemon por orden alfabetico (de menor a mayor). Nuevamente, esto resulta ser muy fácil gracias a que los Pokémon ya vienen ordenados así. Se accede al puntero a Pokémon en la posición `n` y se devuelve directamente.
+**`tp1_buscar_orden`**: Devuelve el `n`-ésimo pokemon por orden alfabetico (de menor a mayor). Nuevamente, esto resulta ser muy fácil gracias a que los Pokémon ya vienen ordenados así. Se accede al puntero a Pokémon en la posición `n` y se devuelve directamente.
 
 **`tp1_con_cada_pokemon`**: Aplica la función `f` a cada Pokémon por orden alfabético (de menor a mayor). La función deja de aplicarse si `f` devuelve `false` o se terminaron los Pokémon. 
 
@@ -147,7 +148,7 @@ Veamos las complejidades individuales de cada función:
 
 `tp1_leer_linea`: Se invoca la función $O(1)$ `fgetc` una vez por cada carácter de una línea de $n$ carácteres. Para comprobar que la cota final es $O(n)$, necesito comprobar que el trabajo que realiza `realloc` durante la lectura no excede esa cota.
 
-Se sabe que `realloc` se invocará $log_2(n)$ veces durante toda la lectura, ya que el tamaño del buffer se duplíca cada vez que se necesita ampliarlo. Entonces, matemáticamente, su trabajo es:
+Se sabe que `realloc` se invocará $log_2(n)$ veces durante toda la lectura, ya que el tamaño del buffer se duplíca cada vez que se necesita ampliarlo, y que además moverá cada vez más posiciones de la memoria hasta que el bloque contenga a la línea completa. Entonces, matemáticamente, su trabajo es:
 
 $T(n) = n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + ... + 4 + 2 + 1$
 
@@ -181,7 +182,7 @@ Como la lectura de una línea y el agregado de Pokémon es $O(n^2)$, la compleji
 
 **`tp1_buscar_orden`**: Se accede directamente al puntero al Pokémon en la posición $n$ dentro del vector y se devuelve. Su complejidad es de $O(1)$.
 
-**`tp1_con_cada_pokemon`**: Su complejdad individual es de $O(n)$ ya que se itera sobre la cantidad total de $n$ Pokémon pertenecientes al vector. Sin embargo, la función `f` puede afectar este valor. Si se considera a la variable $x$ como la cota de la complejidad de `f`, una manera más precisa de representar la complejidad final del iterador es $O(n*x)$.
+**`tp1_con_cada_pokemon`**: Su complejidad individual es de $O(n)$ ya que se itera sobre la cantidad total de $n$ Pokémon pertenecientes al vector. Sin embargo, la función `f` puede afectar este valor. Si se considera a la variable $x$ como la cota de la complejidad de `f`, una manera más precisa de representar la complejidad final del iterador es $O(n*x)$.
 
 **`tp1_destruir`**: Se ejecuta la función $O(1)$, `free()`, por un total de $2n$ veces primero para los nombres de cada Pokémon, y luego para los punteros a cada estructura. Finalmente se libera el vector de Pokémon y la estructura principal. Se llega a una complejidad final de $O(n)$.
 &nbsp;
