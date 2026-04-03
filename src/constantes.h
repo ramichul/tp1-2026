@@ -1,3 +1,6 @@
+#ifndef CONSTANTES_H_
+#define CONSTANTES_H_
+
 #define FORMATO_LECTURA "%[^,],%[^,],%i,%i,%i%*[^\n]\n"
 #define FORMATO_ESCRITURA "%s,%s,%i,%i,%i\n"
 #define IDENTIFICADOR_ARCHIVO ".csv"
@@ -72,3 +75,5 @@
 #define MSJ_EXITO \
 	"\033[38;5;222;1m🔴⚪ Comando realizado con éxito. ¡Hasta luego! ⚪🔴\n\n\033[0m"
 #define MSJ_VACIA "Su Pokédex está vacía.\n\n"
+
+#endif // CONSTANTES_H_
