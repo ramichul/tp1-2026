@@ -26,11 +26,11 @@ int reconocer_comando_o_instruccion(char *comando, int cantidad_validos,
 {
 	int id = -1;
 	int i = 0;
-	bool es_valido = false;
+	bool comando_o_instruccion_es_valido = false;
 
-	while (i < cantidad_validos && !es_valido) {
+	while (i < cantidad_validos && !comando_o_instruccion_es_valido) {
 		if (strcasecmp(listado_validos[i], comando) == 0) {
-			es_valido = true;
+			comando_o_instruccion_es_valido = true;
 			id = i;
 		}
 		i++;
@@ -57,9 +57,8 @@ int controlar_argumentos_iniciales(int argc, char *argv[])
 
 bool imprimir_pokemon(struct pokemon *pokemon, void *extra)
 {
-	if (pokemon == NULL || pokemon->nombre == NULL) {
+	if (pokemon == NULL || pokemon->nombre == NULL)
 		return false;
-	}
 
 	printf(MSJ_DATOS, pokemon->nombre,
 	       NOMBRES_COMPLETOS_TIPOS[pokemon->tipo], pokemon->ataque,
@@ -125,9 +124,8 @@ bool insertar_ordenadamente_por_tipo(struct pokemon *pokemon,
 			pos_a_insertar++;
 		}
 
-		for (size_t j = vec->tope; j > pos_a_insertar; j--) {
+		for (size_t j = vec->tope; j > pos_a_insertar; j--)
 			pokemones[j] = pokemones[j - 1];
-		}
 
 		pokemones[pos_a_insertar] = pokemon;
 		vec->tope++;
@@ -140,18 +138,16 @@ int mostrar_por_tipo(tp1_t *tp1)
 	vector_t vector_aux;
 	vector_aux.elementos =
 		malloc(tp1_cantidad(tp1) * sizeof(struct pokemon *));
-	if (vector_aux.elementos == NULL) {
+	if (vector_aux.elementos == NULL)
 		return ERR_MOSTRAR;
-	}
 	vector_aux.tope = 0;
 
 	tp1_con_cada_pokemon(tp1, insertar_ordenadamente_por_tipo, &vector_aux);
 
 	struct pokemon **pokemones_a_mostrar =
 		(struct pokemon **)(vector_aux.elementos);
-	for (size_t i = 0; i < vector_aux.tope; i++) {
+	for (size_t i = 0; i < vector_aux.tope; i++)
 		imprimir_pokemon(pokemones_a_mostrar[i], NULL);
-	}
 
 	free(vector_aux.elementos);
 
@@ -170,15 +166,12 @@ int ejecutar_comando_mostrar(int argc, char *argv[], tp1_t *tp1)
 	}
 
 	int id_instruccion;
-	if (controlar_instruccion(argv, &id_instruccion) == ERR_CONTROL) {
+	if (controlar_instruccion(argv, &id_instruccion) == ERR_CONTROL)
 		return ERR_MOSTRAR;
-	}
-	if (id_instruccion == 0) {
+	if (id_instruccion == 0)
 		tp1_con_cada_pokemon(tp1, imprimir_pokemon, NULL);
-	}
-	if (id_instruccion == 1) {
+	if (id_instruccion == 1)
 		mostrar_por_tipo(tp1);
-	}
 
 	return 0;
 }
@@ -186,14 +179,12 @@ int ejecutar_comando_mostrar(int argc, char *argv[], tp1_t *tp1)
 int ejecutar_comandos(int argc, char *argv[], tp1_t *tp1)
 {
 	if (strcasecmp(argv[2], COMANDOS_VALIDOS[0]) == 0) {
-		if (ejecutar_comando_buscar(argc, argv, tp1) == ERR_BUSCAR) {
+		if (ejecutar_comando_buscar(argc, argv, tp1) == ERR_BUSCAR)
 			return ERR_COMANDO;
-		}
 	}
 	if (strcasecmp(argv[2], COMANDOS_VALIDOS[1]) == 0) {
-		if (ejecutar_comando_mostrar(argc, argv, tp1) == ERR_MOSTRAR) {
+		if (ejecutar_comando_mostrar(argc, argv, tp1) == ERR_MOSTRAR)
 			return ERR_COMANDO;
-		}
 	}
 
 	return 0;
@@ -202,9 +193,8 @@ int ejecutar_comandos(int argc, char *argv[], tp1_t *tp1)
 int main(int argc, char *argv[])
 {
 	printf(MSJ_BIENVENIDA);
-	if (controlar_argumentos_iniciales(argc, argv) == ERR_CONTROL) {
+	if (controlar_argumentos_iniciales(argc, argv) == ERR_CONTROL)
 		return ERR_CONTROL;
-	}
 
 	tp1_t *tp1 = tp1_leer_archivo(argv[1]);
 	if (tp1 == NULL) {
@@ -216,9 +206,8 @@ int main(int argc, char *argv[])
 
 	tp1_destruir(tp1);
 
-	if (resultado_ejecucion == 0) {
+	if (resultado_ejecucion == 0)
 		printf(MSJ_EXITO);
-	}
 
 	return 0;
 }

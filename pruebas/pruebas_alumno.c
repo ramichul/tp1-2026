@@ -162,17 +162,21 @@ void tp1_leer_archivo_no_distingue_por_mayusculas()
 	tp1_destruir(tp1);
 }
 
-bool campos_parseados_correctamente(struct pokemon parseado,
+bool campos_parseados_correctamente(struct pokemon *parseado,
 				    char *nombre_esperado,
 				    enum tipo_pokemon tipo_esperado,
 				    int ataque_esperado, int defensa_esperada,
 				    int velocidad_esperada)
 {
-	return strcmp(parseado.nombre, nombre_esperado) == 0 &&
-	       parseado.tipo == tipo_esperado &&
-	       parseado.ataque == ataque_esperado &&
-	       parseado.defensa == defensa_esperada &&
-	       parseado.velocidad == velocidad_esperada;
+	if (parseado == NULL) {
+		return false;
+	}
+
+	return strcmp(parseado->nombre, nombre_esperado) == 0 &&
+	       parseado->tipo == tipo_esperado &&
+	       parseado->ataque == ataque_esperado &&
+	       parseado->defensa == defensa_esperada &&
+	       parseado->velocidad == velocidad_esperada;
 }
 
 void tp1_leer_archivo_parsea_campos_correctamente()
@@ -181,7 +185,7 @@ void tp1_leer_archivo_parsea_campos_correctamente()
 	struct pokemon *parseado = tp1_buscar_orden(tp1, 0);
 
 	pa2m_afirmar(
-		campos_parseados_correctamente(*parseado, "Pikachu", TIPO_ELEC,
+		campos_parseados_correctamente(parseado, "Pikachu", TIPO_ELEC,
 					       55, 40, 90),
 		"Al leer un archivo, se parsea cada campo y sus datos se guardan en un struct correctamente");
 
@@ -253,7 +257,7 @@ void tp1_guardar_archivo_mantiene_datos_de_pokemon()
 	struct pokemon *parseado = tp1_buscar_orden(lectura_guardado, 0);
 
 	pa2m_afirmar(
-		campos_parseados_correctamente(*parseado, "Pikachu", TIPO_ELEC,
+		campos_parseados_correctamente(parseado, "Pikachu", TIPO_ELEC,
 					       55, 40, 90),
 		"No se opera sobre un archivo válido, se guarda con éxito y la "
 		"salida mantiene los datos previos");
@@ -271,7 +275,7 @@ void tp1_salida_de_guardar_archivo_tiene_datos_correctos()
 	struct pokemon *parseado = tp1_buscar_orden(lectura_guardado, 0);
 
 	pa2m_afirmar(
-		campos_parseados_correctamente(*parseado, "Pikachu", TIPO_ELEC,
+		campos_parseados_correctamente(parseado, "Pikachu", TIPO_ELEC,
 					       110, 40, 90),
 		"Despues de una operación, se exportan correctamente los datos actualizados del Pokémon al guardar el archivo");
 

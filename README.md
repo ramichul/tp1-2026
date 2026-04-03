@@ -133,8 +133,41 @@ Luego, se decidió agregar el campo *cantidad_pokemones* (el "tope" del vector) 
 &nbsp;
 - **Dar una definición de complejidad computacional y explique cómo se calcula.**
 
-La complejidad computacional es una manera de representar la carga que tiene cierto algorítmo sobre la computadora que lo ejecuta a lo largo del tiempo.
-Para calcularla se estudia como se comporta el algorítmo a medida que el tamaño de la entrada $n$ tiende a infinito. En el abstracto, este comportamiento se puede reducir muchas veces a un cálculo o fórmula matemática que le da una cota final. A partir de la cota calculada, se utiliza la notación *Big O* para categorizar a los algorítmos en diferentes tiempos de ejecución. Estos pueden ser constantes como $O(1)$, polinómicos como $O(n), O(n^2), ..., O(n^k)$, o descriptos por funciones más complejas como $O(n!), O(log(n)), etc...$
+La complejidad computacional es una manera de representar la carga que tiene cierto algorítmo sobre la computadora que lo ejecuta a lo largo del tiempo. Su objetivo es abstraerse de las cuestiones de hardware que influyen en la ejecución del algorítmo y obtener una medida más conceptual de cúan dificíl o densa sería la ejecución de tal algorítmo.
+
+La forma de calcularla es contar instrucciones: en una función, cada sentencia simple dentro de su definición se considera una instrucción. Por ejemplo, una instrucción se vería como `int suma = x + y`, `suma *= 2`, `return 0`, *etc*. Los llamados a funciones no se consideran instrucciones en sí, cada función tiene su propio conteo de instrucciones. Para estructuras iterativas como `for` o `while`, al analizar la complejidad es necesario contar cada instrucción una vez por iteración del ciclo.
+
+Para poder cuantíficar esta complejidad, se considera que cada instrucción toma una cantidad abstracta de tiempo que no utiliza unidades.
+
+Por ejemplo, esta función me ayuda a medir el poder de ataque total de un equipo de Pokémon:
+
+
+```
+int obtener_total_ataque_equipo(tp1_t *tp1)
+{
+  int total_ataque = 0;
+
+  for (int i = 0; i < tp1->cantidad_pokemones; i++){
+    total_ataque += tp1->pokemones[i]->ataque;
+  }
+
+	return total_ataque;
+}
+```
+
+En este ejemplo, las instrucciones `total_ataque += tp1->pokemones[i]->ataque`, junto con la comparación `i < tp1->cantidad_pokemones` y el incremento `i++` se ejecutarán `cantidad_pokemones` veces. Se cuentan dos instrucciones adicionales por la asignación y la devolución arriba y abajo del `for`.
+
+Ahora que se sabe contar instrucciones y medir tiempos abstractos, el objetivo es poder utilizar este modelo para categorizar diferentes algorítmos y saber cual es más o menos complejo. Para esto se utiliza la notación **Big O**, una carácteristica del algorítmo que indica una cota superior de su tiempo de ejecución. Para hallar esta cota, se estudia como se comporta el algorítmo a medida que el tamaño de la entrada $n$ tiende a infinito. Es importante notar que este análisis tambien se hace teniendo en cuenta el **peor caso posible**, es decír el que resulta en un número máximo para la cantidad de iteraciones.
+
+En nuestro ejemplo, $n$ sería la cantidad de Pokémon. Expresemos entonces el comportamiento de la función con una ecuación matemática:
+
+$T(n) = 1 + 3*n + 1$
+
+$T(n) = 3*n + 2$
+
+Ahora, la idea es acotar esta ecuación. Debo encontrar una función de la forma $c*f(n), \, c \in R \, \mid T(n) \le c*f(n) \,\forall \, n \ge n_0$. Si esto se logra, la función $T(n)$ se considera $O(f(n))$.
+
+Por ejemplo: $5*n$ acota superiormente $3*n + 2$ a partir de $n = 1$. Entonces, $T(n)$ (y por extensión el algorítmo del ejemplo) es efectivamente $O(n)$.
 &nbsp;
 - **Explicar con diagramas cómo quedan dispuestas las estructuras y elementos en memoria.**
 
