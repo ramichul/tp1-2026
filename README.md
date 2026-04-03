@@ -165,7 +165,7 @@ $T(n) = 1 + 3 \cdot n + 1$
 
 $T(n) = 3 \cdot n + 2$
 
-Ahora, la idea es acotar esta ecuación. Debo encontrar una función de la forma $c \cdot f(n), c \in R \, \mid T(n) \le c \cdot f(n) \,\forall \, n \ge n_0$. Si esto se logra, la función $T(n)$ se considera $O(f(n))$.
+Ahora, la idea es acotar esta ecuación. Debo encontrar una función de la forma $c \cdot f(n), c \in R \mid T(n) \le c \cdot f(n) \forall n \ge n_0$. Si esto se logra, la función $T(n)$ se considera $O(f(n))$.
 
 Por ejemplo: $5 \cdot n$ acota superiormente $3 \cdot n + 2$ a partir de $n = 1$. Entonces, $T(n)$ (y por extensión el algorítmo del ejemplo) es efectivamente $O(n)$.
 &nbsp;
