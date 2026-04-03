@@ -59,7 +59,7 @@ Existen varias operaciones para realizar sobre la Pokédex:
 
 **`tp1_t *tp1_leer_archivo(const char *nombre)`**: Lee el archivo indicado por `nombre` y devuelve la Pokédex con los Pokémon correspondientes. En caso de error devuelve NULL. Este proceso se realiza en varias fases diferentes:
 1. Se abre el archivo indicado por `nombre` y se reserva memoria tanto para la estructura como la colección de Pokémon.
-2. Se lee una línea y se determina si esta está vacía o es el final del archivo. Si lo es, se ignora y se repite este proceso con la siguiente línea del archivo. Internamente, se lee a partir del archivo y el texto se inserta en un buffer dinámico que se va llenando y escalando continuamente hasta poder contener a la línea completa. El final de una línea se reconoce por el marcador '\n'.
+2. Se lee una línea y se determina si esta está vacía o es el final del archivo. Si lo es, se ignora y se repite este proceso con la siguiente línea del archivo. Internamente, se lee a partir del archivo y el texto se inserta en un buffer dinámico que se va llenando y escalando continuamente hasta poder contener a la línea completa. El final de una línea se reconoce por el marcador `'\n'`.
 3. La línea leída se parsea para asegurar que esta tenga el formato correcto. Si no lo tiene, nuevamente se ignora y se continúa con la siguiente línea. Esto exige que se respete la estructura pedida para cada línea, que la cantidad de campos sea la esperada y que los campos tengan valores lógicos (no se acepta que el Pokémon sea de un tipo fuera de los nombrados en `tp1.h`, por ejemplo). Nuevamente si no se logra pasar este chequeo, el proceso se empieza desde cero.
 4. Si se parsea sin errores, se escanea la colección de Pokémon hasta ahora para asegurarse de que el Pokémon que se está por agregar a la Pokédex no sea repetido (se identifica por nombre y sin distinguir por mayúsculas). En caso de serlo, se ignora la línea y se continúa con la siguiente del archivo.
 5. Finalmente se agrega el Pokémon a la Pokédex con un chequeo por si se debe hacer un ajuste al tamaño del vector. Internamente, este vector se maneja muy similarmente al buffer utilizado durante el proceso de lectura de línea.
@@ -98,9 +98,12 @@ El programa empieza por imprimir un mensaje de bienvenida. Luego, controla que l
 
 Por ejemplo, el programa responde a la entrada incorrecta `./tp1 a b c` de la siguiente manera:
 
+
 ![](https://i.imgur.com/mRzE029.png)
 
+
 Si se pasan los controles iniciales, se empiezan a leer los Pokémon del archivo especificado, y se guardan dentro de un `tp1_t` utilizando `tp1_leer_archivo()` (proceso detallado en [la sección de primitivas del informe](#primitivas)).
+
 
 Se obtiene la Pokédex a partir del archivo, y según la entrada del usuario se ejecutan uno de dos comandos:
 
@@ -119,6 +122,7 @@ Para imprimir por orden de tipo, resultó necesario tener una manera de manipula
 
 Luego de ejecutar el comando se libera la memoria ocupada por la Pokédex. El programa termina su ejecución sin errores en este punto, y le avisa de esto al usuario.
 
+
 &nbsp;
 ## 3. Respuestas a las preguntas teóricas
  - **Explicar la elección de la estructura para implementar la funcionalidad pedida. Justifique el uso de cada uno de los campos de la estructura.**
@@ -129,7 +133,7 @@ Luego, se decidió agregar el campo *cantidad_pokemones* (el "tope" del vector) 
 &nbsp;
 - **Dar una definición de complejidad computacional y explique cómo se calcula.**
 
-La complejidad computacional es una manera de representar la carga que tiene cierto algoritmo sobre la computadora que lo ejecuta a lo largo del tiempo. Su objetivo es abstraerse de las cuestiones de hardware que influyen en la ejecución del algoritmo y obtener una medida más conceptual de cuán difícil o densa sería la ejecución de tal algoritmo.
+La complejidad computacional es una manera de representar la carga que tiene cierto algoritmo sobre la computadora que lo ejecuta a lo largo del tiempo. Su objetivo es abstraerse de las cuestiones de hardware que influyen en la ejecución del algoritmo y obtener una medida más conceptual de cúan difícil o densa sería la ejecución de tal algoritmo.
 
 La forma de calcularla es contar instrucciones: en una función, cada sentencia simple dentro de su definición se considera una instrucción. Por ejemplo, una instrucción se vería como `int suma = x + y`, `suma *= 2`, `return 0`, *etc*. Los llamados a funciones no se consideran instrucciones en sí, cada función tiene su propio conteo de instrucciones. Para estructuras iterativas como `for` o `while`, al analizar la complejidad es necesario contar cada instrucción una vez por iteración del ciclo.
 
@@ -137,6 +141,8 @@ Para poder cuantificar esta complejidad, se considera que cada instrucción toma
 
 Por ejemplo, esta función me ayuda a medir el poder de ataque total de un equipo de Pokémon:
 
+
+```
 int obtener_total_ataque_equipo(tp1_t *tp1)
 {
   int total_ataque = 0;
@@ -147,10 +153,11 @@ int obtener_total_ataque_equipo(tp1_t *tp1)
 
 	return total_ataque;
 }
+```
 
 En este ejemplo, las instrucciones `total_ataque += tp1->pokemones[i]->ataque`, junto con la comparación `i < tp1->cantidad_pokemones` y el incremento `i++` se ejecutarán `cantidad_pokemones` veces. Se cuentan dos instrucciones adicionales por la asignación y la devolución arriba y abajo del `for`.
 
-Ahora que se sabe contar instrucciones y medir tiempos abstractos, el objetivo es poder utilizar este modelo para categorizar diferentes algoritmos y saber cuál es más o menos complejo. Para esto se utiliza la notación **Big O**, una característica del algoritmo que indica una cota superior de su tiempo de ejecución. Para hallar esta cota, se estudia cómo se comporta el algoritmo a medida que el tamaño de la entrada $n$ tiende a infinito. Es importante notar que este análisis también se hace teniendo en cuenta el **peor caso posible**, es decir el que resulta en un número máximo para la cantidad de iteraciones.
+Ahora que se sabe contar instrucciones y medir tiempos abstractos, el objetivo es poder utilizar este modelo para categorizar diferentes algorítmos y saber cual es más o menos complejo. Para esto se utiliza la notación **Big O**, una característica del algoritmo que indica una cota superior de su tiempo de ejecución. Para hallar esta cota, se estudia cómo se comporta el algoritmo a medida que el tamaño de la entrada $n$ tiende a infinito. Es importante notar que este análisis también se hace teniendo en cuenta el **peor caso posible**, es decir el que resulta en un número máximo para la cantidad de iteraciones.
 
 En nuestro ejemplo, $n$ sería la cantidad de Pokémon. Expresemos entonces el comportamiento de la función con una ecuación matemática:
 
@@ -172,13 +179,15 @@ La respuesta a este ítem se puede encontrar en [la sección de estructuras del 
 
 Veamos las complejidades individuales de cada función:
 
-`tp1_leer_linea`: Se invoca la función $O(1)$ `fgetc` una vez por cada carácter de una línea de $n$ caracteres. Para comprobar que la cota final es $O(n)$, necesito comprobar que el trabajo que realiza `realloc` durante la lectura no excede esa cota.
+`tp1_leer_linea`: Se invoca la función $O(1)$ `fgetc` una vez por cada carácter de una línea de $n$ carácteres. Para comprobar que la cota final es $O(n)$, necesito comprobar que el trabajo que realiza `realloc` durante la lectura no excede esa cota.
 
 Se sabe que `realloc` se invocará $log_2(n)$ veces durante toda la lectura, ya que el tamaño del buffer se duplica cada vez que se necesita ampliarlo, y que además moverá cada vez más posiciones de la memoria hasta que el bloque contenga a la línea completa. Entonces, matemáticamente, su trabajo es:
 
 $T(n) = n + \frac{n}{2} + \frac{n}{4} + \frac{n}{8} + ... + 1$
 
 $T(n) = \sum_{i=0}^{log_2(n)}\frac{n}{2^i}$
+
+[Se puede verificar](https://www.wolframalpha.com/input?i=sum+n%2F2%5Ei%2C+i%3D0+to+log2%28n%29) que esta sumatoria tiene el resultado:
 
 $T(n) = 2n - 1$
 
