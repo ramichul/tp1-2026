@@ -1,0 +1,14 @@
+ELEC,55,40,90
+FUEGO,52,43,65
+
+
+aaa
+ELEC,55,40,90
+Pikachu,invalido,55,40,90
+Pikachu,ELEC,invalido,40,90
+Pikachu,ELEC,55,invalido,90
+Pikachu,ELEC,55,40,invalido
+Bulbasaur,PLAN,-1,49,45
+SquirtleAGUA486543
+Jigglypuff.NORM,45,-1,20
+Jigglypuff.NORM,45,20,-1
